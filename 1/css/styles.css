@@ -1,0 +1,23 @@
+#dz {
+    width: 500px;
+    margin: 0 auto;
+}
+
+label {
+    font-weight: bold;
+}
+
+table caption {
+    font-weight: bold;
+    color: #000000;
+    caption-side: top;
+}
+
+.guests {
+    width: 100%;
+}
+
+input:required:valid {
+    border-color: green;    
+}
+

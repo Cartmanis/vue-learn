@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sample">
+            <!--Любой код тут работает в контексте данного объекта Vue. $event.target - тот элемент на котором произошло событие, т.е input-->
+            <input type="text" v-model = 'firstName'>                                       
+            <hr>            
+            <input type="text" v-model = 'lastName'>
+            <hr>            
+            <input type="text" v-model.lazy = 'promo'>
+            <h2>Hello, {{ fullName }} </h2>
+            <button v-on:click = 'showName=!showName' class="btn btn-success">ToggleName</button>
+            <hr>
+            <h3 v-show ="showName">Your sale is {{sale}} %</h3>
+        </div>      
+    </div>
+    <script>
+        function getSale(code, callback) {
+            let codes = {
+                newYear: 10,
+                some: 20
+            };
+            let sale = (codes[code] !==undefined) ? codes[code] : 0;
+            setTimeout(() => {
+                callback(sale); //возвращаем sale с callback
+            }, 2000);            
+        }
+
+        let sample =  new Vue({
+            el: '.sample',
+            data: { //Хранятся переменные, которые мы хотим использовать в html
+                firstName: '',
+                lastName: '',
+                fullname: '',
+                promo: '',                
+                showName: false,
+                sale: 0                
+            },
+            //computed нельзя использовать при выполнении асинхронных операций, так как аснихронные операции передадут значение позже а не прямо сейчас
+            computed: {
+                fullName() {
+                    console.log('render fullname');
+                    return this.firstName + ' ' + this.lastName;
+                }
+            },
+            
+            //нужны для выполнения асинхронных операций
+            watch:  {
+                promo() {
+                    getSale(this.promo, (sale) => {
+                        this.sale = sale; 
+                    });
+                }
+            }
+        });
+    </script>    
+</body>
+</html>

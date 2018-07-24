@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hw_1_form</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class = 'wrapper'>
+        <div class = 'hw'>
+            <form v-show = '!showData' @submit.prevent ='showData = true'>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" v-bind:style = 'progressWidth'></div>
+                </div>
+                <app-some v-for ='(item, index) in info' :key = 'index' :item = 'item' :index = 'index' @change-error = 'onChangeError'></app-some>                                            
+                <hr>
+                <button class ='btn btn-primary' :disabled = 'done < info.length'>Send Data</button>
+            </form>
+            <div></div>
+            
+            <table v-show = 'showData' class ='table table-bordered'>
+                <caption>All Done!</caption>
+                <tr v-for = 'item in info'>
+                    <td>{{item.name}}</td>
+                    <td>{{item.value}}</td>
+                </tr>
+            </table>     
+        </div>
+    </div>    
+    <script> 
+       Vue.component('app-some', {
+            props: ['item', 'index'], //данные которые поступают в компонент из привязки v-bind в html коде.
+            template: `
+                <div class = 'form-group'>
+                    <label for ='item.name'>{{item.name}}</label>
+                    <span class = 'fa' :class = 'setClassValid'></span>                    
+                    <input type = 'text' id = 'item.name' class ='form-control' v-model = 'item.value' v-on:input ='onInput'> 
+                </div>
+            `,
+            data() { 
+                return {
+                    activated: false                  
+                }
+            },
+            computed: {
+                setClassValid() { 
+                    console.log("setClassValid");
+                    if(!this.activated) {
+                        return '';
+                    }
+                    if(!this.item.pattern.test(this.item.value)) {                        
+                        this.$emit('change-error', this.index, true); //генерация события с флагом для error - true               
+                        return ['fa', 'fa-exclamation-circle', 'text-danger'];
+                    }
+                                        
+                    this.$emit('change-error', this.index, false); //генерация события с флагом для error - false
+                    return ['fa', 'fa-check-circle', 'text-success'];                                                                                                                                                                   
+                }
+            },
+            methods: {
+                onInput() {
+                    this.activated = true;
+                }                
+            }
+        });
+        new Vue({
+            el: '.hw',
+            data: {                
+                info: [
+                    {
+                        name: 'Name',
+                        value: '',
+                        pattern: /^[a-zA-z ]{2,30}$/
+                    },
+                    {
+                        name: 'Phone',
+                        value: '',
+                        pattern: /^[0-9]{7,14}$/
+                    },
+                    {
+                        name: 'Email',
+                        value: '',
+                        pattern: /.+@./ 
+                    },
+                    {
+                        name: 'Some Field 1',
+                        value: '',
+                        pattern: /.+/
+                    },
+                    {
+                        name: 'Some Field 2',
+                        value: '',
+                        pattern: /.+/
+                    }
+                ],
+                controls:[],
+                showData: false           
+            },
+            computed: {
+                //Свойство считает количество успешно введенных полей
+                 done() {
+                     let done = 0;
+
+                     for(let i = 0; i < this.controls.length; i++) {
+                         if(!this.controls[i].error) {
+                             done++;
+                         }                         
+                     }
+                     return done;
+                 },
+                 //Свойство возвращает количество успешно заполненны полей в процентах для progressBar, используя свойство done
+                 progressWidth() {
+                     const step = 100 / this.info.length;              
+                     return `width:${this.done * step}%`;
+                 }      
+            },
+
+            methods: {
+                onChangeError(index,flag) {  //Обработчик собственного события change-error сгенерированного в дочернем компоненте                
+                    this.controls[index].error = flag;
+                }
+            },
+
+            beforeMount() {         
+                for(let i = 0; i < this.info.length; i++) {
+                    this.controls.push({
+                        error: true,
+                    });
+                }
+            }                          
+        });
+    </script>    
+</body>
+</html>

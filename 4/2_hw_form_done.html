@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hw_1_form</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class = 'wrapper'>
+        <div class = 'hw'>
+            <form v-show = '!showData'  @submit.prevent ='showData = true'>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" v-bind:style = 'progressWidth'></div>
+                </div>
+                <app-some v-for ='(item, index) in info' :key = 'index' 
+                :name = 'item.name' :value = 'item.value' :pattern = 'item.pattern' 
+                 @field-change = 'onFieldChange(index, $event)'> <!--параметры можно передавать как от родителя, то есть index, так и от детей $event - это объект data, 
+                                    который передается от дочернего компонента. $event - переменная формируется на лету, когда мы подисываемся на любое событие-->
+
+                </app-some>                                            
+                <hr>
+                <button class ='btn btn-primary' :disabled = 'done < info.length'>Send Data</button>
+            </form>
+            <div></div>
+            
+            <table v-show ='showData' class ='table table-bordered'>
+                <caption>All Done!</caption>
+                <tr v-for = 'item in info'>
+                    <td>{{item.name}}</td>
+                    <td>{{item.value}}</td>
+                </tr>
+            </table>     
+        </div>
+    </div>    
+    <script> 
+       Vue.component('app-some', {
+            props: ['name', 'value', 'pattern'], //данные которые поступают в компонент из привязки v-bind в html коде.
+            //v-model использовать в компонентах считается плохой практикой, так как мы нарушаем прицип однонаправленной связи и есть большая вероятность, 
+            //что при изменении value будет ререредериться родительский экземпляр vue и родитель отдаст дочернему компоненту опять старые данные value. 
+            //То есть по сути по такому пути данные никогда не обновяться. В моем дз я стакой проблемой не столкнулся поскольку передавал весь объект целиком, и
+            //все изменения происходили по ссылке, а не по значению, но все равно считается плохой практикой
+            template: ` 
+                <div class = 'form-group'>
+                    <label for ='name'>{{name}}</label>
+                    <span class = 'fa' :class = 'setClassValid' v-if = 'true'></span>                    
+                    <input type = 'text' id = 'name' class ='form-control' :value = 'value' v-on:input ='onInput'> 
+                </div>
+            `,
+            data() { 
+                return {
+                    activated: this.value != ''                  
+                }
+            },
+            computed: {
+                setClassValid() { 
+                    console.log("setClassValid");
+                    if(!this.activated) {
+                        return '';
+                    }
+                    return this.pattern.test(this.value) ?
+                    'fa-check-circle text-success': 'fa-exclamation-circle text-danger';
+                }
+            },
+            methods: {
+                onInput(e) {
+                    this.activated = true;
+                    //параметры можно передавать как от детей, то есть тут, так и от родителей
+                    this.$emit('field-change',{ //этот объект - это и есть $event, который передается в родителе вместе c index и который будет data в обработчике родителя onInput
+                        value: e.target.value, //e.target - это сам объект input, а value - это его значение
+                        valid: this.pattern.test(e.target.value)  //передаем еще один параметр, который показывает валидин или нет этот компонент
+                    }) //генерируем свое событие, но тут мы его можем назвать и input, не смотря на то, что такое событие уже существует*/
+                }                
+            }
+        });
+        new Vue({
+            el: '.hw',
+            data: {                
+                info: [
+                    {
+                        name: 'Name',
+                        value: '',
+                        pattern: /^[a-zA-z ]{2,30}$/
+                    },
+                    {
+                        name: 'Phone',
+                        value: '',
+                        pattern: /^[0-9]{7,14}$/
+                    },
+                    {
+                        name: 'Email',
+                        value: '',
+                        pattern: /.+@./ 
+                    },
+                    {
+                        name: 'Some Field 1',
+                        value: '',
+                        pattern: /.+/
+                    },
+                    {
+                        name: 'Some Field 2',
+                        value: '',
+                        pattern: /.+/
+                    }
+                ],
+                controls:[],
+                done: 0,
+                showData: false           
+            },
+            computed: {                
+                 //Свойство возвращает количество успешно заполненны полей в процентах для progressBar, используя свойство done
+                 progressWidth() {
+                     const step = 100 / this.info.length;              
+                     return `width:${this.done * step}%`;
+                 }      
+            },
+
+            methods: {
+                onFieldChange(index, data) {
+                    this.info[index].value = data.value;
+                    this.controls[index] = !data.valid;
+                    let done = 0;
+                    for(let i = 0; i < this.controls.length; i++) {
+                         if(!this.controls[i]) {
+                             done++;
+                         }                         
+                     }
+                     this.done = done;
+                }
+
+            },
+
+            beforeMount() {         
+                for(let i = 0; i < this.info.length; i++) {
+                    this.controls.push(true);
+                }
+            }                          
+        });
+    </script>    
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script> 
+    <style>
+        .alert {
+            transition: min-height 0.5s;
+        }
+    </style>   
+</head>
+<body>
+    <div class = 'wrapper'>
+        <div class = 'sample'>
+            <div class ='alert' v-bind:style ='[properties, minHeight]'> <!--подисываем style на объект properties и computed minHeight одновременно-->
+                Some text
+            </div>            
+            <hr>
+            <table class="table table-bordered">
+                <tr v-for ='(value, name) in properties'>
+                    <td>{{name}}</td>
+                    <td>
+                        <input type="text" v-model ='properties[name]'>
+                    </td>
+                </tr>              
+            </table>
+            <hr>
+            <button class="btn btn-primary" @click = 'height +=10'>+ height</button>
+            {{minHeight}}
+        </div>   
+    </div>    
+    <script>
+        new Vue({
+            el: '.sample',
+            data: {                
+                 properties: { 
+                    color: 'inherit',
+                    backgroundColor: 'none'
+                 },
+                 height: 0 
+            },
+            computed: {
+                minHeight() {
+                    //return 'min-height: ' + this.height + 'px';
+                    return {
+                        minHeight: this.height + 'px'
+                    }
+                }
+            }           
+        });
+    </script>    
+</body>
+</html>

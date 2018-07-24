@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hw_1_form</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class = 'wrapper'>
+        <div class = 'hw'>
+            <form v-show = '!showData' @submit.prevent ='showData = true'>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" v-bind:style = 'progressWidth'></div>
+                </div>
+                <div class = 'form-group' v-for ='(item, index) in info'>
+                    <label for ='item.name'>{{item.name}}</label>
+                    <!--Тут мы используем не метод, как в моём д.з., а пишем код прямо в v-bind:class, поэтому расчитываться тут будет все только один раз,
+                    а не 5 как получилось у меня в д.з. с использованием метода. Видимо вызов метода подразумевает полное изменение виртуального дом?..-->
+                    <!--Проще также производительно можно будет реализовать на компонентном подходе-->
+                    <span class = 'fa'
+                            v-if = 'controls[index].activated'
+                            :class = "controls[index].error ? 'fa-exclamation-circle text-danger':
+                                                            'fa-check-circle text-success'"
+                    ></span>                    
+                    <input type = 'text' id = 'item.name' class ='form-control' 
+                    v-bind:value='item.value' v-on:input ='onInput(index, $event.target.value)'> <!--Данный метод вызывается по событию и будет вызываться для определенного input-->
+                    </input>
+                </div>                                                
+                <hr>
+                <button class ='btn btn-primary' :disabled = 'done < info.length'>Send Data</button>
+            </form>
+            <div></div>
+            
+            <table v-show = 'showData' class ='table table-bordered'>
+                <caption>All Done!</caption>
+                <tr v-for = 'item in info'>
+                    <td>{{item.name}}</td>
+                    <td>{{item.value}}</td>
+                </tr>
+            </table>     
+        </div>
+    </div>    
+    <script>    
+        new Vue({
+            el: '.hw',
+            data: {                
+                info: [
+                    {
+                        name: 'Name',
+                        value: '',
+                        pattern: /^[a-zA-z ]{2,30}$/
+                    },
+                    {
+                        name: 'Phone',
+                        value: '',
+                        pattern: /^[0-9]{7,14}$/
+                    },
+                    {
+                        name: 'Email',
+                        value: '',
+                        pattern: /.+@./ 
+                    },
+                    {
+                        name: 'Some Field 1',
+                        value: '',
+                        pattern: /.+/
+                    },
+                    {
+                        name: 'Some Field 2',
+                        value: '',
+                        pattern: /.+/
+                    }
+                ],
+                controls: [],
+                showData: false           
+            },
+            methods: {
+                //Метод обновляет value из объекта info, а также определяет была ли ошибка при вводе в input и обновляет error из controls
+               onInput(index, value) {
+                   const item = this.info[index]; //получаем item из info по index
+                   const control = this.controls[index];//получаем control из массива controls по тому же index
+                   
+                   item.value = value; //присваиваем объекту item value из введенного value в input
+                   control.activated = true; //поэтому используем ручной метод для обновления value в info, чтобы засечь первый ввод данных и изменить флаг activated
+                   control.error = !item.pattern.test(value); //проверяем на ошибку и если ошибка есть присваем true иначе false
+                   console.log(`${item.name}: ${control.error}`);
+               }
+            },
+            computed: {
+                //Свойство считает количество успешно введенных полей
+                 done() {
+                     let done = 0;
+
+                     for(let i = 0; i < this.controls.length; i++) {
+                         if(!this.controls[i].error) {
+                             done++;
+                         }                         
+                     }
+                     return done;
+                 },
+                 //Свойство возвращает количество успешно заполненны полей в процентах для progressBar, используя свойство done
+                 progressWidth() {
+                     const step = 100 / this.info.length;              
+                     return `width:${this.done * step}%`;
+                 }      
+            },       
+            beforeMount() {
+                console.log('before');
+                //Основная идея реализация первой д.р. на интенсиве в том, что мы в объекты массива инфо добавляем еще поля.
+                //При этом поля добавляются динамически перед созданием объекта el (с помощью beforeMount)               
+                for(let i = 0; i < this.info.length; i++) {
+                    this.controls.push({
+                        error: true,
+                        activated: false
+                    });
+                }
+            }             
+        })
+    </script>    
+</body>
+</html>

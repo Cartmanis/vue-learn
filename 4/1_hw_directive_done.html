@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hw_1_directive</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div class="sample">
+        <div v-timer:1000.5 = 'onTimer'>1</div>
+        <div v-timer:1000.5.run = 'onTimer'>2</div>
+        <div v-timer:1000 = 'onTimer'>3</div>
+    </div>
+
+	<script>		
+        Vue.directive('timer', {
+            bind(el, options) { 
+                let currentCount = 0;
+         
+                const interval = options.arg;                              
+                let max = Infinity; //modiferCount
+                
+                for(let modifier in options.modifiers) {
+                    if(!isNaN(+modifier)){
+                        max = parseInt(modifier);
+                    }
+                }
+                                
+                 let callback = () => {                                                         
+                    currentCount++;
+                    options.value(el);
+                    
+                    if(currentCount < max) {
+                        setTimeout(() => {
+                            callback();
+                        }, interval);
+                    }
+                 };
+                 
+                if(currentCount < max) {
+                    if(options.modifiers.run) {
+                        setTimeout(callback, 0); //опять же если просто вызвать callback не работает увеличение сразу в run
+                    } else {
+                        setTimeout(() => {
+                            callback();
+                        }, interval);
+                    }
+                }                                                                                          
+            } 
+        });
+
+		new Vue({
+			el: '.sample',
+			data: {
+			},
+            methods: {
+                 onTimer(refDiv) {
+                      let fontSize = getComputedStyle(refDiv)['fontSize'];                    
+                      refDiv.style.fontSize = parseInt(fontSize) + 10 + 'px';
+                      console.log(`${refDiv.innerText}--> fontSize: ${fontSize}`);                                                                                     
+                 }        
+            },
+            computed: { 
+
+            }
+		});
+	</script>
+</body>
+</html>

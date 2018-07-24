@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class = 'wrapper'>
+        <div class = 'sample'>
+            <div class = "form-group">
+                <label for='phone'>Phone</label>
+                <input id ='phone' class ='form-control' v-model.lazy.trim ='phone' @keyup.enter= 'show = true'></input>
+            </div>
+                                    
+            <div v-show = 'show'>
+                {{phone}}
+            </div>
+        </div>   
+    </div>    
+    <script>
+    //hooks - это подвешивание на событие, по сути эти те же самые event в js    
+        new Vue({
+            el: '.sample',
+            //если присутсвует template, то копиляция идёт через template, если template нет, то компилируется el- то есть сам объект Vue. То есть template приоритетнее
+            //template пригодиться когда мы используем свои собственные компоненты. Там будем использовать vueCli совместно с WebPack в отдельных файлах с расширением Vue
+            // template: '<div>123</div>', 
+            data: {
+               phone: '',
+               show: false      
+            }
+        });
+
+       /*  let eventName = args.modifieds.lazy ? 'change' : 'input';
+        
+        if(args.modifieds.trim) {
+            e.target.value = e.target.value.trim();
+        }
+
+        addEventListener(eventName, callback); */
+    </script>    
+</body>
+</html>

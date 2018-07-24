@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sample">
+            <!--Любой код тут работает в контексте данного объекта Vue. $event.target - тот элемент на котором произошло событие, т.е input-->
+            <input type="text" v-model = 'firstName'>                                       
+            <hr>            
+            <input type="text" v-model = 'lastName'>
+            <hr>            
+            <input type="text" v-model = 'promo'>
+            <h2>Hello, {{ fullName }} </h2>
+            <button v-on:click = 'showName=!showName' class="btn btn-success">ToggleName</button>
+            <hr>
+            <div v-show ="showName">Your sale is {{sale}} %</div>
+        </div>      
+    </div>
+    <script>
+        function getSale(code) {
+            let codes = {
+                newYear: 10,
+                some: 20
+            };
+            let sale = (codes[code] !==undefined) ? codes[code] : 0;
+            return sale;
+        }
+
+        let sample =  new Vue({
+            el: '.sample',
+            data: { //Хранятся переменные, которые мы хотим использовать в html
+                firstName: '',
+                lastName: '',
+                fullname: '',
+                promo: '',                
+                showName: false
+            },
+            computed: {
+                fullName() {
+                    console.log('render fullname');
+                    return this.firstName + ' ' + this.lastName;
+                },
+                sale() {
+                    return getSale(this.promo);
+                }
+            }
+            /*
+            watch: {
+                firstName() {
+                    this.fullName = this.firstName + ' ' + this.lastName;
+                },
+                lastName() {
+                    this.fullName = this.firstName + ' ' + this.lastName;
+                }
+            }*/
+        });
+    </script>    
+</body>
+</html>

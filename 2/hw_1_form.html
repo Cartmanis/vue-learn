@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hw_1_form</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class = 'wrapper'>
+        <div class = 'hw'>
+            <form v-show = '!showData' @submit.prevent = 'showData = true'>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" v-bind:style = 'progressFill'></div>
+                </div>
+                <div class = 'form-group' v-for ='(field, index) in info'>
+                    <label for ='field.name'>{{field.name}}</label>
+                    <span v-bind:class = 'labelClassName(field)'></span> <!--данный метод будет вызываться для всеx input при каждом обновлении, 
+                            а метод который вызывается по событию будет вызывать только для input, в котором он вызыван -->                   
+                    <input type = 'text' id = 'field.name' class ='form-control' v-model.trim = 'field.value'></input>
+                </div>                                                
+                <hr>
+                <button ref='btn' class ='btn btn-primary' disabled >Send Data</button>
+            </form>
+            <div></div>
+            
+            <table class ='table table-bordered' v-show ='showData'>
+                <caption>All Done!</caption>
+                <tr v-for = 'field in info'>
+                    <td>{{field.name}}</td>
+                    <td>{{field.value}}</td>
+                </tr>
+            </table>     
+        </div>
+    </div>    
+    <script>    
+        new Vue({
+            el: '.hw',
+            data: {                
+                info: [
+                    {
+                        name: 'Name',
+                        value: '',
+                        pattern: /^[a-zA-z ]{2,30}$/
+                    },
+                    {
+                        name: 'Phone',
+                        value: '',
+                        pattern: /^[0-9]{7,14}$/
+                    },
+                    {
+                        name: 'Email',
+                        value: '',
+                        pattern: /.+@./ 
+                    },
+                    {
+                        name: 'Some Field 1',
+                        value: '',
+                        pattern: /.+/
+                    },
+                    {
+                        name: 'Some Field 2',
+                        value: '',
+                        pattern: /.+/
+                    }
+                ],
+                btn: '', //Тут будет храниться ссылка на элемента button через ref, то есть this.btn = this.$refs.btn;               
+                countCheck: 0,
+                step: 0,
+                showData: false            
+            },
+            methods: {
+                //данный метод при изменеии в одном инпуте будет вызывться также и для каждого input, что не очень то производительно...
+                //По хорошему тут необходимо использовать вычисляемое свойство - в интенсивном примере это будет разобранно
+                labelClassName(field) { 
+                    console.log("labelClassName");
+                    if(!field.value) {
+                        return '';
+                    }
+                    if(!field.pattern.test(field.value)) {
+                        return ['fa', 'fa-exclamation-circle', 'fa-red'];
+                    }                    
+                                                             
+                    return ['fa', 'fa-check-circle', 'fa-green'];                                            
+                },
+            },
+            computed: {
+                progressFill(e) {
+                    //const btn = document.querySelector('button'); //так во vue делать нельзя!!! данную кнопку можно получить с помощью ref, но тут оно иногода почему то undefined... 
+                    //или использовать e.target- но тут e.target не подойдет, так progressFill вызывается не на компоненте button
+
+                     if(this.countCheck === this.info.length) {
+                        this.btn.disabled = false;
+                    } else {
+                        this.btn.disabled = true;
+                    }                                               
+                    return `width: ${this.countCheck * this.step}%`;
+                }        
+            },
+            mounted() { 
+                console.log('mounted: После mounted Экземпляр vue смонтирован');
+                this.btn = this.$refs.btn;               
+                this.step = 100 / this.info.length;
+            },
+            updated() {                               
+                const green = document.querySelectorAll('.fa-check-circle');
+                this.countCheck = green.length;                
+            }             
+        })
+    </script>    
+</body>
+</html>

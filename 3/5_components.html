@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sample">
+            <app-some v-for ='(elem, index) in values' :key = 'index'
+                v-bind:min = 'elem.min' 
+                :max = 'elem.max'
+                @plusplus = 'onPlusPlus(index)'><!--Передаем в наш компонент данные в props - elem.min и elem.max,
+                    а родителю данные передаем, через генерацию собственного события plusplus - в обработчик можем передавать любые параметры-->
+            </app-some>
+		</div>
+    </div>
+	<script>
+        //Пример создания локального компонента - будут дочерним по отношению к объекту Vue
+        Vue.component('app-some', {
+            props: {
+                min: Number,
+                max: Number
+            }, //данные которые поступают в компонент из привязки v-bind в html коде.
+            template: `
+                <div>
+                    <h2>{{number}}</h2>
+                    <hr>
+                    <button class = 'btn btn-primary' @click= 'onGenerator'>+</button>
+                </div>
+            `,
+            data() { //данные в компоненте записываются именно в таком виде, чтобы у нескольких компонентов были именно разные data, 
+                    //поскольку object - это ссылочный тип данных и изменив data в одном компоненте - они поменются у всех- поэтому тут в отличии от объекта Vue
+                    //data именно функция, которая возвращает объект (обертку), а не просто объект
+                return {
+                    /*number: Math.floor(Math.random() * (this.max - this.min)) + this.min*/
+                }
+            },
+            computed: {
+                number() {
+                    return Math.floor(Math.random() * (this.max - this.min)) + this.min;
+                }
+            },
+            methods: {
+                onGenerator(e) { //Метод дочернего компонетна, который по сути генерирует событие, которое  оповещает родителя об определенном событие с помощью обработчика
+                    this.$emit('plusplus'); //создание события plusplus, с помощью, которого мы в родительский компонент сможем передавать данные
+
+                    //props менять нельзя, так их изменение приведет к ререндерингу компонента, где на входе мы опять получим изначальные min и max
+                    //porps спускаются от родителя к детям и никогда не изменяются детьми
+                    //можно лишь изменить min и max у родителя с помощью генерации события
+                    //this.min +=5;;
+                    //this.max += 5;
+                }
+            }
+        });
+
+		new Vue({ //Будет родителем по отношению к нашему созданному компоненту
+			el: '.sample',        
+			data: {
+                values: [
+                    {
+                        min: 1,
+                        max: 3
+                    },
+                    {
+                        min: 5,
+                        max: 10
+                    },
+                    {
+                        min: 10,
+                        max: 15
+                    },
+                ]
+			},
+            methods: {
+                onPlusPlus(index) {
+                    this.values[index].min += 5;
+                    this.values[index].max += 5;
+                    console.log('Данные от компонента поступают в родителя от index: ',index);
+                }
+            }            
+		});
+	</script>
+</body>
+</html>

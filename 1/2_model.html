@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sample">
+            <!--Любой код тут работает в контексте данного объекта Vue. $event.target - тот элемент на котором произошло событие, т.е input-->
+            <input type="text" 
+            v-on:input = 'name = $event.target.value' 
+            v-bind:value = "name"                             
+            >                           
+            <hr>
+            <h2>Hello, {{name}} </h2>
+        </div>      
+    </div>
+    <script>
+        let sample =  new Vue({
+            el: '.sample',
+            data: { //Хранятся переменные, которые мы хотим использовать в html
+                name: 'Default'
+            }
+        });
+    </script>    
+</body>
+</html>

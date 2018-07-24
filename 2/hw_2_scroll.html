@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hw_2_scroll</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sample">
+            <form v-show = '!showData' @submit.prevent = 'showData = true'>
+        		<div class="content alert alert-info">
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+                </div>
+                <div v-show = 'showCheck'>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" v-model = 'iAgreeThisText' v-on:change = 'agreeText' >
+                            I agree this text						
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" v-model = 'sendMeSpam' v-on:change = 'sendSpam' >
+                            Send me spam						
+                        </label>
+                    </div>
+                </div>
+                <div v-show = 'showRadio'>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" checked v-model='radioValue' value = 'email'> 
+                            Send me spam on email
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" v-model ='radioValue' value = 'phone'> 
+                            Send me spam on phone
+                        </label>
+                    </div>
+                </div>
+		        
+			    <hr>
+				<button v-show = 'showButton' class="btn btn-primary">
+					Send Data
+				</button>
+			</form>
+			<div>
+				<table v-show = 'showData' class="table table-bordered">
+					<tr>
+						<td>Agree Text</td>
+                        <td>{{agreeText()}}</td>                    
+                    </tr>
+                    <tr>
+                        <td>Get Spam</td>
+                        <td>{{sendSpam()}}</td>
+                    </tr>
+                    <tr v-show = 'showRadio'>
+                        <td>Spam On</td>
+                        <td>{{spamOn}}</td>
+                    </tr>
+				</table>
+			</div> 
+		</div>
+    </div>
+	<script>
+		
+		let sampale = new Vue({
+			el: '.sample',
+			data: {
+                iAgreeThisText: false,
+                sendMeSpam: false,
+                radioValue: 'email',
+
+                showCheck: false,
+                showRadio: false,
+                showButton: false,
+                showData: false
+			},
+            methods: {
+                agreeText() {
+                    if(this.iAgreeThisText) {
+                        this.showButton = true;
+                        return 'Yes';
+                    }
+                    this.showButton = false;                    
+                    return 'No';
+                },
+                sendSpam() {                    
+                    if(this.sendMeSpam) {
+                        this.showRadio = true;
+                        return 'Yes';                        
+                    }
+                    this.showRadio = false;
+                    return 'No';
+                }    
+            },
+
+            computed: { 
+                 spamOn() {
+                    return (this.sendSpam()==='Yes') ? this.radioValue : '';
+                } 
+            }
+		});
+
+        //для прокрутки
+        const divScroll = document.querySelector('.content');        
+        divScroll.onscroll = function() {
+            if(this.scrollTop === this.scrollHeight - this.clientHeight) {
+                sampale.showCheck = true;
+            }
+        }
+
+	</script>
+</body>
+</html>

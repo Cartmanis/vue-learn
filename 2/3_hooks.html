@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class = 'wrapper'>
+        <div class = 'sample'>
+            <div class = "form-group">
+                <label for='phone'>Phone</label>
+                <input id ='phone' class ='form-control' v-model.trim ='phone'></input>
+            </div>
+            {{phone}}                
+        </div>
+    </div>    
+    <script>
+    //hooks - это подвешивание на событие, по сути эти те же самые event в js    
+        new Vue({
+            el: '.sample',
+            //если присутсвует template, то копиляция идёт через template, если template нет, то компилируется el- то есть сам объект Vue. То есть template приоритетнее
+            //template пригодиться когда мы используем свои собственные компоненты. Там будем использовать vueCli совместно с WebPack в отдельных файлах с расширением Vue
+            // template: '<div>123</div>', 
+            data: {
+               phone: 777      
+            },
+            //После создания объекта new Vue() - Инициализация событий и жизненого цикла
+            beforeCreate() { //1 хук
+                console.log('beforeCreate: После beforeCreate - Инициализация инъекций и системы реактивности - создает геттеры и сеттеры');
+                console.log(this.$el);
+            },
+            created() { //2 хук
+                //Тут Vue.js задает два вопроса
+                console.log('created вопрос1: Есть ли опция el?. Если НЕТ: когда вызван vm.$mount(el) и переход к следующему вопросу, если ДА-то сразу переход к следующему вопросу');
+                console.log(`created вопрос2: Есть ли опция "template?" 
+                (ДА, то компиляция идёт через template в рендер функцию; НЕТ: Компиляция outerHTML из el, то есть через объект Vue - <div class = "sampale">...</div> `);
+                console.log(this.$el);
+            },
+            beforeMount() { //на этом этапе можно внедрить функцию на проверку валидной версии vue.js
+                console.log('beforeMount: После beforeMount Создание vm.$el и замена им содержимого "el"');
+                console.log(this.$el.innerHTML); //вот тут происходит создание объекта Vue вместе с {{firstName}}- то есть шаблон получен, но без редеринга
+            },
+            mounted() { //4 хук
+                console.log('mounted: После mounted Экземпляр vue смонтирован'); //смонтирован значить отрендерен
+                console.log(this.$el.innerHTML); //а тут уже вместо {{firstName}} подставляются значения из data -то есть тут рендериться шаблон
+            },
+            beforeUpdate() {
+
+                console.log('beforeUpdate: Когда данные уже изменены и происходит перед изменением данных');
+
+                /* пример на практике применять можно только, если в компоненте всего один input, так как, если input много 
+                срабатываение будет происходить после изменения каждого input*/
+                const pattern = /^[0-9]*$/;
+                const remove = /[^0-9]/g;
+                if(!pattern.test(this.phone)) {
+                    console.log('Значением поля Phone могут быть только цифры: ', this.phone);
+                    this.phone = this.phone.replace(remove, '');
+                }                
+            },
+            updated() {
+                console.log('updated: Обновление виртуального DOM и применение изменений');
+            }
+
+        })
+    </script>    
+</body>
+</html>

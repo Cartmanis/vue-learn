@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div class="sample">
+        <app-some            
+            :b = "'true'"
+            :c = '3'
+            :v = '1'>
+        </app-some>
+    </div>
+
+	<script>		
+       Vue.component('appSome', {
+           props: {
+                a: {
+                    type: Number, //тип данных
+                    required: true,//обязательное поле
+                    default: 777 //значение по умолчанию
+                    
+                },
+                b: [Number, String], //может быть несколько типов данных В таком виде "'true'" -передается именно строка 'true', а не тип boolean
+                c: null, //null означает, что тут может быть любой тип данных
+                d: {
+                    type: Object,
+                    default() { //если тип Object, то так как Object - это ссылочный тип, то просто присвоить default: { } мы не может, тогда это затроинт все компоненты
+                        return {
+                            a: 1
+                        }
+                    }
+                },
+                v: {
+                    validator(val) {
+                        return val > 1 && val < 10;
+                    }
+                }
+               },
+           template: `<div>
+                            <div>{{a}}</div>
+                            <div>{{b}}</div>
+                            <div>{{c}}</div>
+                            <div>{{d}}</div>
+                            <div>{{v}}</div>
+                      </div>`
+       });
+
+
+		new Vue({
+			el: '.sample',			
+		});
+	</script>
+</body>
+</html>

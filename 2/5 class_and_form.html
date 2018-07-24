@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class = 'wrapper'>
+        <div class = 'sample'>
+            <div class ='alert' v-bind:class = "divClassName" > <!--динамическое переключение классов-->
+                Some text
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" value = 'info' v-model = 'divClass'>
+                    Info
+                </label>
+            </div>
+            <div class = 'form-check'>
+                <label class="form-check-label">
+                        <input type="radio" class="form-check-input" value = 'warning' v-model ='divClass'>
+                        Warning
+                </label>
+            </div>
+            <div class = 'form-check'>
+                <label class="form-check-label">
+                        <input type="radio" class="form-check-input" value = 'success' v-model ='divClass'>
+                        Success
+                </label>
+            </div>
+            {{divClass}}
+            <hr>
+            <div class = 'form-check' v-for = "(value, name) in flags">
+                <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" v-model = 'flags[name]'>
+                        {{name}} --> {{value}}
+                </label>
+            </div>
+            <hr>
+            <table class="table" :class ='flags'>
+                <tr>
+                    <td>Title</td>
+                    <td>Some</td>
+                    <td>nz</td>
+                </tr>
+                <tr>
+                    <td>Some</td>
+                    <td>Some</td>
+                    <td>nz</td>
+                </tr>
+                <tr>
+                    <td>Some</td>
+                    <td>Some</td>
+                    <td>nz</td>
+                </tr>
+            </table>
+        </div>   
+    </div>    
+    <script>
+    /*
+        :class = 'string'
+        :class = 'array'
+        :class = 'object'
+        :class = [str, array, obj]
+        :class = ['alert', 'some', {a: true, b: false}]
+
+    */
+        new Vue({
+            el: '.sample',
+            data: {
+                 divClass: '',
+                 flags: { //В этом объекте храняться имя чекбокса( Key) и значение чекбокса (value)
+                     'table-bordered': false,
+                     'table-hover': false,
+                     'table-some': false
+                 } 
+            },
+            computed: {
+                divClassName() { 
+                    return [
+                        'alert-' + this.divClass,
+                        'my-' + this.divClass
+                    ]
+                }
+            }            
+        });
+    </script>    
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hw_2_scroll</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sample">
+            <form v-show = '!showData' @submit.prevent = 'showData = true'>
+        		<div v-on:scroll = 'onScroll' class="content alert alert-info">
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+					<p>This text no one reads. This text no one reads. This text no one reads.</p>
+                </div>
+                <template v-if = 'showCheck'> <!--Если используем template, то директива v-show не подойдёт, нужно тогда именно v-if, 
+                                                так как тег template не отображается в дереве DOM-->
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" v-model ='flagsCheck.agree'>
+                            I agree this text						
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" v-model = 'flagsCheck.spam'>
+                            Send me spam						
+                        </label>
+                    </div>
+                </template>
+                <div v-show = 'flagsCheck.spam'>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" checked v-model='spam' value = 'email'> 
+                            Send me spam on email
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" v-model ='spam' value = 'phone'> 
+                            Send me spam on phone
+                        </label>
+                    </div>
+                </div>
+		        
+			    <hr>
+				<button v-show = 'flagsCheck.agree' class="btn btn-primary">
+					Send Data
+				</button>
+			</form>
+			<div>
+				<table v-show = 'showData' class="table table-bordered">
+					<tr>
+						<td>Agree Text</td>
+                        <td>{{isAgree}}</td>                    
+                    </tr>
+                    <tr>
+                        <td>Get Spam</td>
+                        <td>{{isSpam}}</td>
+                    </tr>
+                    <tr v-show = 'flagsCheck.spam'>
+                        <td>Spam On</td>
+                        <td>{{typeSpam}}</td>
+                    </tr>
+				</table>
+			</div> 
+		</div>
+    </div>
+	<script>
+		
+		let sampale = new Vue({
+			el: '.sample',
+			data: {
+                flagsCheck: {
+                    agree: false,
+                    spam: false
+                },        
+                spam: 'phone',
+                showCheck: false,
+                showData: false
+			},
+            methods: {
+                onScroll(e) { //У себя в решении почему-то вынес событие onscroll за объект Vue
+                    if(e.target.scrollTop === e.target.scrollHeight - e.target.clientHeight) {
+                        this.showCheck = true;
+                    }
+                }                
+            },
+            computed: { 
+                isAgree() {
+                    return (this.flagsCheck.agree) ? 'Yes' : 'No';
+                },
+                isSpam() {
+                    return (this.flagsCheck.spam) ? 'Yes' : 'No';
+                },
+                typeSpam() {
+                    return (this.isSpam === 'Yes') ? this.spam : '';
+                } 
+            }
+		});
+	</script>
+</body>
+</html>

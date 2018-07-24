@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href ="css/styles.css">
+    <script src = "js/vue.js"></script>    
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sample">
+            <!--Любой код тут работает в контексте данного объекта Vue. $event.target - тот элемент на котором произошло событие, т.е input-->
+            <input type="text" v-model = 'firstName'>                                       
+            <hr>            
+            <input type="text" v-model = 'lastName'>
+            <h2>Hello, {{ fullName }} </h2>
+            <button v-on:click = 'showName=!showName' class="btn btn-success">ToggleName</button>
+            <hr>
+            <div v-show ="showName">Some text</div>
+        </div>      
+    </div>
+    <script>
+        let sample =  new Vue({
+            el: '.sample',
+            data: { //Хранятся переменные, которые мы хотим использовать в html
+                firstName: '',
+                lastName: '',
+                showName: false
+            },
+            computed: {
+                fullName() {
+                    console.log('render fullname');
+                    return this.firstName + ' ' + this.lastName;
+                }
+            }
+        });
+    </script>    
+</body>
+</html>

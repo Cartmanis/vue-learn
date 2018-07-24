@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div class="sample container">
+        <button class="btn btn-primary" @click = "flagUl = !flagUl">Toggle</button>
+        <hr>
+        <app-ul v-show ='flagUl' :items = list></app-ul>
+        <app-ol v-show = '!flagUl' :items = list :start = '5'></app-ol>
+        <!--Оператор is определяет какого типа тут будет компонент app-ul или app-ol. Тут по сути то же самое, что и в ветлениии v-if v-else строкой выше
+        component is используется когда много компонентов с одинаковой логикой, если логика у компонетов отличается, то лучше применять v-if v-else или v-show
+        v-show при этом не перестаивает DOM, а просто скрывает объект в браузере - display: none-->
+
+        <component :is = 'listType' :items ='list'></component> 
+    </div>
+
+	<script>		
+       Vue.component('appUl', {
+            props: {
+               items: null
+            },
+           template: `
+               <ul>
+                    <li v-for ='item in items'>{{item}}</li>
+               </ul>`,
+            created() {
+                console.log('ul: created');
+            }   
+       });
+
+       Vue.component('appOl', {
+            props: {
+               items: null,
+               start: Number
+            },
+           template: `
+               <ol :start = 'start'>
+                    <li v-for ='item in items'>{{item}}</li>
+               </ol>`,
+            created() {
+                console.log('ol: created');
+            }    
+       });
+
+
+		new Vue({
+			el: '.sample',
+            data: {
+                list: ['Some', 'Items', 'For', 'List'],
+                flagUl: true 
+            },
+            computed: {
+                listType() {
+                    return this.flagUl ? 'app-ul' : 'app-ol'
+                }
+            }		
+		});
+	</script>
+</body>
+</html>
