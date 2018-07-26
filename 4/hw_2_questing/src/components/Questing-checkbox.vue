@@ -4,7 +4,7 @@
     <hr>
     <div class = 'form-group' v-for = '(answer, index) in answers' :key ='index'>
       <label for = 'answer'>{{answer}}</label>
-      <input type = 'typ' id = 'answer' value = 'typ'>
+      <input :type = "type" id = 'answer' :value = 'answer' @change= "onChange(index, $event)" v-model = 'checkAnswers[index]'>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
        type: String,
        required: true
     },
-    typ: {
+    type: {
       type: String,
       required: true
     },
@@ -25,6 +25,17 @@ export default {
       required: true
     }
   },
+
+  data() {
+    return {
+      checkAnswers: [false, false, false, false]
+    }
+  },
+  methods: {
+    onChange(index, e) {
+      this.$emit('change-answer-checkbox', this.checkAnswers);      
+    }
+  }
 }
 </script>
 
