@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-    <form @sumbit.prevent = 'onClickButton'>
-      <questing-radio :type = 'info[0].type' :title = 'info[0].title' 
-      :answers= 'info[0].answers' @change-answer-radio = 'onChangeAnswerRadio'
+    <form>
+      <questing-radio v-show = "listType === 'questing-radio' " :type = 'info[0].type' :title = 'info[0].title' 
+      :answers= 'info[0].answers' @get-answer = 'onChangeAnswerRadio'
       ></questing-radio>      
-      <questing-checkbox :type = 'info[1].type' :title ='info[1].title' 
-      :answers = 'info[1].answers' @change-answer-checkbox = 'onChangeAnswerCheckbox'
-      ></questing-checkbox>      
-      <button class="btn btn-success" :disabled= 'flag'>Send Data</button>
-      <!--<component :is = 'listType' :items ='list'></component>  -->
+      <questing-checkbox v-show ="listType ==='questing-checkbox'" :type = 'info[1].type' :title ='info[1].title' 
+      :answers = 'info[1].answers' @get-answer = 'onChangeAnswerCheckbox'
+      ></questing-checkbox>
     </form>
     <table>
       <tr>
@@ -53,26 +51,18 @@ export default {
       ],
       radioAnswer: '',
       checkAnswers: [],
-      flag: true,
-      showData: false
+      listType: 'questing-radio'
     }
   },
   methods: {
-    onChangeAnswerRadio(index, value) {
-      this.radioAnswer = index; 
-      console.log(this.radioAnswer);     
-      this.flag = false;
+    onChangeAnswerRadio(value, next) {
+      this.radioAnswer = value;
+      this.listType = next;       
     },
-    onChangeAnswerCheckbox(checkAnswers) {
-      console.log(checkAnswers);
+     onChangeAnswerCheckbox(checkAnswers, next) {      
       this.checkAnswers = checkAnswers;
-      this.flag = false;
+      this.listType = next;    
     }
-  },
-  computed: {
-      computedAnswer() {
-        return true;
-      }
   }
 }
 </script>
