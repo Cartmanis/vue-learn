@@ -2,7 +2,7 @@
   <div id="app">
     <form>
       <questing-radio v-show = "listType === 'questing-radio' " :type = 'info[0].type' :title = 'info[0].title' 
-      :answers= 'info[0].answers' @get-answer = 'onChangeAnswerRadio'
+      :answers= 'info[0].answers'  @get-answer = 'onChangeAnswerRadio'
       ></questing-radio>      
       <questing-checkbox v-show ="listType ==='questing-checkbox'" :type = 'info[1].type' :title ='info[1].title' 
       :answers = 'info[1].answers' @get-answer = 'onChangeAnswerCheckbox'

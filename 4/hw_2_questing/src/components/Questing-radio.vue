@@ -2,15 +2,15 @@
   <div>
     <h3>{{title}}</h3>
     <hr>
-      <!-- <answer v-for = '(answer, index) in answers' :key = 'index'
-            :type = 'type' :answer = 'answer' v-model= 'currentValue' @change-radio = 'onChangeRadio'></answer>-->
-      <div class ='form-group' v-for = '(answer, index) in answers' :key ='index'>
+      <answer v-for = '(answer, index) in answers' :key = 'index'
+            :type = 'type' :answer = 'answer' :index = 'index' 
+            v-model= 'currentValue' @change-radio = 'onChangeRadio'></answer>
+      <!--<div class ='form-group' v-for = '(answer, index) in answers' :key ='index'>
         <label class="form-check-label">
             <input :type = 'type' class = "form-check-input" :value = 'index' v-model = 'currentValue'> 
         {{answer}}
-        </label>
-                 
-      </div>
+        </label>                  
+      </div>-->
       <button type='button' @click = "onClickButton" class="btn btn-success" :disabled= 'disabledButton'>Send Data</button>
   </div>
 </template>

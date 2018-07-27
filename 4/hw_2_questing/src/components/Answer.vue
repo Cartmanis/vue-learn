@@ -1,7 +1,8 @@
 <template>
 <div class = 'form-group'>    
     <label class="form-check-label">
-        <input :type = 'type' class="form-check-input" :value = 'answer' v-model = 'currentValue' @change= 'onChange'>
+        <input :type = 'type' class="form-check-input" name = 'name' :value = 'index'
+         v-model = 'currentValue' @change= 'onChange'>
             {{answer}}
     </label>
 </div>
@@ -20,6 +21,10 @@ export default {
         answer: {
             type: String,
             required: true
+        },
+        index: {
+            type: Number,
+            required: true,            
         }
     },
 
@@ -31,7 +36,6 @@ export default {
 
     methods: {
         onChange() {
-            console.log(this.currentValue);
             this.$emit('change-radio', this.currentValue)
         }
     }
