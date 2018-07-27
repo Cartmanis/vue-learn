@@ -3,8 +3,11 @@
     <h3>{{title}}</h3>
     <hr>
     <div class = 'form-group' v-for = '(answer, index) in answers' :key ='index'>
-      <label for = 'answer'>{{answer}}</label>
-      <input :type = "type" id = 'answer' :value = 'answer' v-model = 'checkAnswers[index]'>
+      <label>
+        <input :type = "type" :value = 'answer' v-model = 'checkAnswers[index]'>
+        {{answer}}
+      </label>
+      
     </div>
     <button type='button' @click="onClickButton" class="btn btn-success" :disabled= 'disabledButton'>Send Data</button>
   </div>
@@ -38,13 +41,13 @@ export default {
     }
   },
   computed: {
-    disabledButton() {
-      for(let i=0; i < this.checkAnswers; i++) {
+    disabledButton() {      
+      for(let i=0; i < this.checkAnswers.length; i++) {
           if(this.checkAnswers[i]) {
-            return true;
+            return false;
           }          
         }
-        return false;
+        return true;
     }
   }
 }

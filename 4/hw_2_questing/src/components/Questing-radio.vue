@@ -6,9 +6,10 @@
             :type = 'type' :answer = 'answer' v-model= 'currentValue' @change-radio = 'onChangeRadio'></answer>-->
       <div class ='form-group' v-for = '(answer, index) in answers' :key ='index'>
         <label class="form-check-label">
-          <input :type = 'type' class = "form-check-input" :value = 'index' v-model = 'currentValue'>
-              {{answer}}
-        </label>      
+            <input :type = 'type' class = "form-check-input" :value = 'index' v-model = 'currentValue'> 
+        {{answer}}
+        </label>
+                 
       </div>
       <button type='button' @click = "onClickButton" class="btn btn-success" :disabled= 'disabledButton'>Send Data</button>
   </div>
