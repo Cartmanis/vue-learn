@@ -8,7 +8,7 @@
       :answers = 'info[1].answers' @get-answer = 'onChangeAnswerCheckbox'
       ></questing-checkbox>
     </form>
-    <table>
+    <table v-show = "listType ==='show-result'">
       <tr>
         <th>Вопрос</th>
         <th>Ваш ответ</th>

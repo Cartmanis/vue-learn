@@ -4,7 +4,7 @@
     <hr>
       <answer v-for = '(answer, index) in answers' :key = 'index'
             :type = 'type' :answer = 'answer' :index = 'index' 
-            v-model= 'currentValue' @change-radio = 'onChangeRadio'></answer>
+            v-model= 'currentValue' @change-questing = 'onChangeQuesting'></answer>
       <!--<div class ='form-group' v-for = '(answer, index) in answers' :key ='index'>
         <label class="form-check-label">
             <input :type = 'type' class = "form-check-input" :value = 'index' v-model = 'currentValue'> 
@@ -49,9 +49,8 @@ export default {
       //Тут вместе с результатом пробрасываем событие смены вопроса следующий вопрос
       this.$emit('get-answer', this.currentValue, 'questing-checkbox'); 
     },
-    onChangeRadio(newValue) {
+    onChangeQuesting(newValue) {
       this.currentValue = newValue;
-      console.log(this.currentValue);
     }
   },
   computed: {

@@ -3,15 +3,16 @@
     <h3>{{title}}</h3>
     <hr>
     <answer v-for = '(answer, index) in answers' :key = 'index'
-    :type = 'type' :answer = 'answer' :index = 'index' 
-    v-model= 'checkAnswers[index]' @change-radio = 'onChangeRadio'>></answer>
+    :type = 'type' :answer = 'answer' :index = 'index'  :value = 'answer'
+    v-model= 'checkAnswers[index]' @change-questing = 'onChangeQuesting($event, index)'>></answer><!--$event - это параметр,
+     переданный из дочернего комонента, который сгенерировал событие change-questing-->
     <!--<div class = 'form-group' v-for = '(answer, index) in answers' :key ='index'>
       <label>
         <input :type = "type" :value = 'answer' v-model = 'checkAnswers[index]'>
         {{answer}}
       </label>      
     </div> -->
-    <button type='button' @click="onClickButton" class="btn btn-success" :disabled= 'disabledButton'>Send Data</button>
+    <button type='button' @click="onClickButton" class="btn btn-success" :disabled= 'flagDisabled'>Send Data</button>
   </div>
 </template>
 
@@ -38,26 +39,25 @@ export default {
 
   data() {
     return {
-      checkAnswers: [false, false, false, false]
+      checkAnswers: [false, false, false, false],
+      flagDisabled: true
     }
   },
   methods: {
     onClickButton() {
       this.$emit('get-answer', this.checkAnswers, 'show-result');      
     },
-    onChangeRadio(newValue) {
-        this.checkAnswers = newValue;
-        console.log(this.checkAnswers);
-    }
-  },
-  computed: {
-    disabledButton() {      
-      for(let i=0; i < this.checkAnswers.length; i++) {
+    onChangeQuesting(event, index) {
+        this.checkAnswers[index] = event;//newValue - параметр, переданный из дочернего компонента
+
+         for(let i=0; i < this.checkAnswers.length; i++) {
           if(this.checkAnswers[i]) {
-            return false;
+            this.flagDisabled = false;
+            return;
           }          
         }
-        return true;
+        this.flagDisabled = true;
+        
     }
   }
 }

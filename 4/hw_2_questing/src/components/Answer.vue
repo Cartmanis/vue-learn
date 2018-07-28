@@ -36,7 +36,8 @@ export default {
 
     methods: {
         onChange() {
-            this.$emit('change-radio', this.currentValue)
+    // this.currentValue = true/ false для компонента Questing-radio и [false, false, false, false] для компонтента Questing-checkbox
+            this.$emit('change-questing', this.currentValue); 
         }
     }
 }
