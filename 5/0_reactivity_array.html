@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sample">
+            <form>
+                <div class="form-group">
+                    <label>Guests</label>
+                    <input type="button" class="btn btn-primary" value="+" @click="addGuest">
+                </div>
+                <div class="form-group" v-for="(name, index) in guests">
+                    <label @dblclick="deleteGuest(index)">Guest {{ index + 1 }}</label>
+                    <input type="text" class="form-control" @input="onInput(index, $event)">
+                </div>
+                <hr>
+                <button class="btn btn-success">Send Data</button>
+            </form>
+            <div>
+                <h2>All done!</h2>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Guests</td>
+                        <td>
+                            <ul class="list-group">
+                                <li class="list-group-item" v-for="guest in guests">
+                                    {{ guest }}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '.sample',
+            data: {
+                guests: []
+            },
+            methods: {
+                addGuest(){
+                    this.guests.push('');
+                },
+                deleteGuest(ind){
+                    this.guests.splice(ind, 1);
+                },
+                onInput(ind, e){
+                    
+                    //this.guests[ind] = e.target.value; //данная форма записи изменяет массив не реактивно
+                    //По умолчанию реактивно в массиве прописаны методы pop, push, shift, unshift и.т.д.
+                    this.$set(this.guests, ind, e.target.value); //Метод $set гарантирует реактивное изменения массива
+                    //Ps: при этом, если использовать v-model, вместо @input, то данные и в первой записи будут реактивны- 
+                    //получается, что v-model не просто синтаксический сахар, но и использует внутри себя реализацю set 
+                }
+            }
+        });
+    </script>
+</body>
+</html>

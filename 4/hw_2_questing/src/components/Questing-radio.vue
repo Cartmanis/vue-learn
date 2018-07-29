@@ -2,15 +2,18 @@
   <div>
     <h3>{{title}}</h3>
     <hr>
-      <answer v-for = '(answer, index) in answers' :key = 'index'
+    <!--с использованием дополнительного компонента под ответ- answer -->
+      <!--<answer v-for = '(answer, index) in answers' :key = 'index'
             :type = 'type' :answer = 'answer' :index = 'index' 
-            v-model= 'currentValue' @change-questing = 'onChangeQuesting'></answer>
-      <!--<div class ='form-group' v-for = '(answer, index) in answers' :key ='index'>
+            v-model= 'currentValue' @change-questing = 'onChangeQuesting'></answer>-->
+
+       <!--С использованием без дополнительного компонента под ответ -->      
+      <div class ='form-group' v-for = '(answer, index) in answers' :key ='index'>
         <label class="form-check-label">
             <input :type = 'type' class = "form-check-input" :value = 'index' v-model = 'currentValue'> 
         {{answer}}
         </label>                  
-      </div>-->
+      </div>
       <button type='button' @click = "onClickButton" class="btn btn-success" :disabled= 'disabledButton'>Send Data</button>
   </div>
 </template>

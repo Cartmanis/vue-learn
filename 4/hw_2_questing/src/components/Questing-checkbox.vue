@@ -2,17 +2,20 @@
   <div>
     <h3>{{title}}</h3>
     <hr>
-    <answer v-for = '(answer, index) in answers' :key = 'index'
+    <!--с использованием дополнительного компонента под ответ- answer -->
+    <!--<answer v-for = '(answer, index) in answers' :key = 'index'
     :type = 'type' :answer = 'answer' :index = 'index'  :value = 'answer'
-    v-model= 'checkAnswers[index]' @change-questing = 'onChangeQuesting($event, index)'>></answer><!--$event - это параметр,
+    v-model= 'checkAnswers[index]' @change-questing = 'onChangeQuesting($event, index)'>></answer>--><!--$event - это параметр,
      переданный из дочернего комонента, который сгенерировал событие change-questing-->
-    <!--<div class = 'form-group' v-for = '(answer, index) in answers' :key ='index'>
+
+     <!--С использованием без дополнительного компонента под ответ -->
+    <div class = 'form-group' v-for = '(answer, index) in answers' :key ='index'>
       <label>
-        <input :type = "type" :value = 'answer' v-model = 'checkAnswers[index]'>
+        <input :type = "type" class="form-check-input" :value = 'answer' v-model = 'checkAnswers[index]'>
         {{answer}}
       </label>      
-    </div> -->
-    <button type='button' @click="onClickButton" class="btn btn-success" :disabled= 'flagDisabled'>Send Data</button>
+    </div> 
+    <button type='button' @click="onClickButton" class="btn btn-success" :disabled= 'disabledButton'>Send Data</button>
   </div>
 </template>
 
@@ -40,24 +43,30 @@ export default {
   data() {
     return {
       checkAnswers: [false, false, false, false],
-      flagDisabled: true
     }
   },
   methods: {
     onClickButton() {
       this.$emit('get-answer', this.checkAnswers, 'show-result');      
     },
-    onChangeQuesting(event, index) {
-        this.checkAnswers[index] = event;//newValue - параметр, переданный из дочернего компонента
 
-         for(let i=0; i < this.checkAnswers.length; i++) {
+    //event - параметр, переданный из дочернего компонента
+    onChangeQuesting(event, index) {
+        //this.checkAnswers[index] = event; //Если использовать такой вид изменения массива, то массив будет не реактивиен
+        // и изменения в computed свойтсве disabledButton не будут фиксировться, хотя при этом сам массив будет изменяться
+        this.$set(this.checkAnswers, index, event); //Вот правильное изменение массива, где данные массивы будут реактивно
+        //синхронизоваться с изменениями во всем приложении
+    }
+  },
+  computed: {
+    //в данном computed массив не реактивен, пришлось придумывать другое решение...
+    disabledButton() {
+      for(let i=0; i < this.checkAnswers.length; i++) {
           if(this.checkAnswers[i]) {
-            this.flagDisabled = false;
-            return;
+             return false;
           }          
         }
-        this.flagDisabled = true;
-        
+      return true;
     }
   }
 }

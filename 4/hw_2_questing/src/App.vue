@@ -1,14 +1,19 @@
 <template>
   <div id="app">
     <form>
-      <questing-radio v-show = "listType === 'questing-radio' " :type = 'info[0].type' :title = 'info[0].title' 
+      <!--Для квестов лучше использовать v-if, а не v-show, так как элементы отображаются всего один раз и не переключаются.
+      v-show ререндерит сразу все компоненты и тем, которые не проходят проверку выставляет значение display: none,
+      v-if ререндерит компоненты в момент выполнения условия
+      А если бы вопросов было 1000 и более то они бы ререндерились бы сразу все. Это не очень быстро и не оптимально, если
+      пользователь ответит всего на два вопроса из 1000, а ререндеться они будут все-->
+      <questing-radio v-if = "listType === 'questing-radio' " :type = 'info[0].type' :title = 'info[0].title' 
       :answers= 'info[0].answers'  @get-answer = 'onChangeAnswerRadio'
       ></questing-radio>      
-      <questing-checkbox v-show ="listType ==='questing-checkbox'" :type = 'info[1].type' :title ='info[1].title' 
+      <questing-checkbox v-if ="listType ==='questing-checkbox'" :type = 'info[1].type' :title ='info[1].title' 
       :answers = 'info[1].answers' @get-answer = 'onChangeAnswerCheckbox'
       ></questing-checkbox>
     </form>
-    <table v-show = "listType ==='show-result'">
+    <table v-if = "listType ==='show-result'">
       <tr>
         <th>Вопрос</th>
         <th>Ваш ответ</th>
