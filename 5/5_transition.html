@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+   <div class="container">
+	   <div class="sample">
+			<button class="btn btn-primary" @click="show = !show">Toggle</button>
+			<transition name="fade" appear> <!--Для создания анимация объект Vue.js необходимо обернуть в transition
+									appear делает анимацию даже уже для объявленного элемента в DOM при загрузке страницы-->
+				<div class="alert alert-success" v-show="show">
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+				</div>
+			</transition>
+		</div>
+	</div>
+<script>
+
+	new Vue({
+		el: '.sample',
+		data: {
+			show: true
+		}
+	});
+
+</script>
+<style>
+	
+	.btn{
+		margin: 10px 0;
+	}
+
+
+	/*6 классов для создания анимации */
+	.fade-enter{ /*класс задается на секунду до совершения анимации.
+				 Для плавной анимации задаем начальную прозрачность равную 0 */
+		opacity: 0; 
+	}
+
+	.fade-enter-active{/*класс живет в течении всей анимации*/
+		transition: opacity 0.5s;
+	}
+
+	.fade-enter-to{/* после завершения анимации еще доли секунды будет показан данный класс */
+		opacity: 1;/*По логике тут должен быть opacity: 1, но это делать не нужно, так как у данного элемента
+					и так оpacity: 1 */
+	}
+
+	.fade-leave{
+		opacity: 1;/*По логике тут должен быть opacity: 1, но это делать не нужно, так как у данного элемента
+					и так оpacity: 1 */
+	}
+
+	.fade-leave-active{/*Данный класс также живет в течении всей анимации поэтому тут указываем transition*/
+		transition: opacity 0.5s;
+		/*opacity: 0; можно было бы добавить и сюда, но так как добавили классы .fade-enter-to и .fade-leave-to
+					то правильнее будет добавить в .fade-leave-to */
+	}
+
+	.fade-leave-to{
+		opacity: 0;
+	}
+
+	/*
+	classList.add fade-enter (op: 0)
+	classList.add fade-enter-active (transition)
+	getComputedStyle[transition-duration] -> 0.5s
+		(:duration || transition-duration || animation-duration)
+	classList.remove fade-enter (op: 1)
+	classList.add fade-enter-to 
+	setTimout(transition-duration)
+		classList.remove fade-enter-active
+		classList.remove fade-enter-to
+	*/
+
+</style>
+</body>
+</html>

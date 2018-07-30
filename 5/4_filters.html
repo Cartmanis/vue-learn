@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+   <div class="container">
+	   <div class="sample">
+			<button class="btn btn-primary" @click="show = !show">Toggle</button>
+			<div class="alert alert-warning" v-show="show">
+				{{ text }} <hr>
+				{{ text | length }}<hr> <!--Прменение фильтров-->
+				{{ text | reverse | upper }}<hr><!--Последовательное применение фильтров-->
+				{{ textLength }} <!--Применение computed-->
+			</div>
+		</div>
+	</div>
+<script>
+
+	new Vue({
+		el: '.sample',
+		data: {
+			show: true,
+			text: 'Some text'
+		},
+
+		/*Применять фильтры конечно удобнее чем computed, но они как и методы вызываются каждый раз когда в DOM произошли
+		изменения, независмо от того, что данный конкретный элемент и не менялся, computed же являеются более оптимальным
+		и приоритетным решением для производительности*/
+		computed: {
+			textLength(){
+				console.log('computed: textLength');
+				return this.text.length;
+			}
+		},
+		filters: {
+			length(some){
+				console.log('filter: length');
+				return some.length;
+			},
+			reverse(str){
+				return str.split('').reverse().join('');
+			},
+			upper(str){
+				return str.toUpperCase();
+			}
+		}
+	});
+
+</script>
+</body>
+</html>

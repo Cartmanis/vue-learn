@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+   <div class="container">
+       <div class="sample">
+           <button class="btn btn-primary" @click ='show = !show'>Toggle</button>
+           <div class="alert alert-warning" v-show = 'show'>Some text               
+           </div>
+       </div>
+       <div class="sample2">
+        <button class="btn btn-primary" @click="show = !show">Toggle</button>
+        <div class="alert alert-warning" v-show="show">
+            Some text
+        </div>
+    </div>
+   </div>
+    <script>
+        //mixin (примесь) может использоваться во многих компонентах и
+        //позволяет избежать дубль кода
+        let mixinUpdateLogger = {
+            data: {
+                update: 0
+            },
+            updated() {
+                this.update++;
+                console.log(this.update);
+            }
+        }
+
+        new Vue({
+            el: '.sample',
+            data: {
+                show: true,
+                update: 0
+            },
+            mixins: [mixinUpdateLogger] //подключаем mixin для первого экземпляра Vue
+        });
+        new Vue({
+            el: '.sample2',
+            data: {
+                show: true,
+                update: 0
+            },
+            mixins: [mixinUpdateLogger] //подключаем mixin для второго экземпляра Vue
+        });
+    </script>
+</body>
+</html>

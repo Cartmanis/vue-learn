@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1</title>
+    <link rel="stylesheet" href="css//bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="js/vue.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+   <div class="container">
+	   <div class="sample">
+			<button class="btn btn-primary" @click="show = !show">Toggle</button>
+			<transition name="boom" mode="out-in">
+				<div class="alert alert-success" 
+					 v-if="show"
+					 key="success">
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+				</div>
+				<div class="alert alert-danger" 
+				     v-else
+				     key="danger">
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+					<div>Some text about some</div>
+				</div>
+			</transition>
+		</div>
+	</div>
+<script>
+
+	new Vue({
+		el: '.sample',
+		data: {
+			show: true
+		}
+	});
+
+</script>
+<style>
+	
+	.btn{
+		margin: 10px 0;
+	}
+
+	.boom-enter{
+		
+	}
+
+	.boom-enter-active{
+		animation: slideIn 0.5s;
+	}
+
+	.boom-enter-to{
+		
+	}
+
+	.boom-leave{
+		
+	}
+
+	.boom-leave-active{
+		animation: slideOut 0.5s;
+	}
+
+	.boom-leave-to{
+		
+	}
+
+	@keyframes slideIn{
+		from{transform: translateX(100vw);}
+		to{transform: translateX(0px);}
+	}
+
+	@keyframes slideOut{
+		from{transform: translateX(0px);}
+		to{transform: translateX(-100vw);}
+	}
+
+	/*	
+	1 classList.add fade-leave 
+	2 classList.add fade-enter
+	1 classList.add fade-leave-active
+	2 classList.add fade-enter-active
+	1 getComputedStyle[transition-duration] -> 0.5s
+	2 getComputedStyle[transition-duration] -> 0.5s
+	1 classList.remove fade-leave
+	2 classList.remove fade-enter
+	1 classList.add fade-leave-to 
+	2 classList.add fade-enter-to 
+	1 setTimout(transition-duration)
+		  classList.remove fade-enter-active
+		  classList.remove fade-enter-to
+	2 setTimout(transition-duration)
+		  classList.remove fade-enter-active
+		  classList.remove fade-enter-to
+
+
+	1 classList.add fade-leave 
+	1 classList.add fade-leave-active
+	1 getComputedStyle[transition-duration] -> 0.5s
+	1 classList.remove fade-leave
+	1 classList.add fade-leave-to 
+	1 setTimout(transition-duration)
+		  classList.remove fade-enter-active
+		  classList.remove fade-enter-to
+
+		  2 classList.add fade-enter
+		  2 classList.add fade-enter-active
+		  getComputedStyle[transition-duration] -> 0.5s
+		  2 classList.remove fade-enter
+		  2 classList.add fade-enter-to 
+		  2 setTimout(transition-duration)
+			  classList.remove fade-enter-active
+			  classList.remove fade-enter-to
+	*/
+
+</style>
+</body>
+</html>
