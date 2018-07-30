@@ -13,7 +13,7 @@
    <div class="container">
 	   <div class="sample">
 			<button class="btn btn-primary" @click="show = !show">Toggle</button>
-			<transition name="fade" appear> <!--Для создания анимация объект Vue.js необходимо обернуть в transition
+			<transition name="fade" appear> <!--Для создания анимации объект Vue.js необходимо обернуть в transition
 									appear делает анимацию даже уже для объявленного элемента в DOM при загрузке страницы-->
 				<div class="alert alert-success" v-show="show">
 					<div>Some text about some</div>
@@ -77,7 +77,7 @@
 	classList.add fade-enter-active (transition)
 	getComputedStyle[transition-duration] -> 0.5s
 		(:duration || transition-duration || animation-duration)
-	classList.remove fade-enter (op: 1)
+	classList.remove fade-enter (op: 1) //fade-enter удаляется и opacity с плавностью 0.5s переходит в 1
 	classList.add fade-enter-to 
 	setTimout(transition-duration)
 		classList.remove fade-enter-active
