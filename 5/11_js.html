@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1</title>
+    <title>11</title>
     <link rel="stylesheet" href="css//bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link href="css/animate.css" rel="stylesheet">
@@ -19,7 +19,7 @@
 						@before-enter="beforeEnter"
 						@enter="enter"
 						@leave="leave"
-    					>	
+    					><!--отключаем css анимацию :css = 'false'	-->
 				<div class="alert alert-success" v-if="show" key="first">
 					<p>Some text about some</p>
 					<p>Some text about some</p>
@@ -43,30 +43,35 @@
 			show: true
 		},
 		methods: {
-			beforeEnter(el){
+			//.fade-enter из примера transition, где opacity: 0
+			beforeEnter(el){ 
 				el.style.opacity = 0;
 			},
-			enter(el, done){
-				let time = 500;
-				let fps = 50;
-				let fr = 1000 / fps;
-				let steps = time / fr;
-				let d = 1 / steps;
-				let step = 0;
-				let o = 0;
+			//.fade-enter-active из примера transition
+			//подписываясь на данный хук мы берем на себя реализацию анимации вручную с помощью js кода
+			enter(el, done){ //done -callback, вызов, которого будет сиволизировать об окончании данного действия
+				let time = 500; //интервал (время)
+				let fps = 50; //количество кадров в секунду
+				let fr = 1000 / fps; //частота показа кадров, получается 1000/50 = 20 каждые 20 ms
+				let steps = time / fr; //общее количество шагов. Общее время разделить на частоту показа кадра
+				let d = 1 / steps; //один шаг opacity
+				let step = 0; //один шаг
+				let o = 0; //текущее значение opacity
 
 				let timer = setInterval(() => {
 					step++;
-					o += d;
-					el.style.opacity = o;
+					o += d;//каждый 20 ms увеличиваем opacaty на один шаг
+					el.style.opacity = o; //передаем текущее значение opacity
 
-					if(step >= steps){
+					if(step >= steps){ //при прохождении всех шагов останавливаем setIterval
 						clearInterval(timer);
-						el.style.opacity = 1;
-						done();
+						el.style.opacity = 1; //устанавливаем opacity в итоговое значение 1
+						done(); //говорим о готовности выполнения данного хука
 					}
 				}, fr);
 			},
+			//.fade-leave-active из примера transition
+			//в данном хуке то же самое но с уменьшением opacity до 0
 			leave(el, done){
 				let time = 500;
 				let fps = 50;

@@ -17,10 +17,12 @@
             </form>
             <table v-show ='showData' class ='table table-bordered'>
                 <caption>All Done!</caption>
-                <tr v-for = '(item, index) in info' :key ='index'>
-                    <td>{{item.name}}</td>
-                    <td>{{item.value}}</td>
-                </tr>
+                <tbody>
+                  <tr v-for = '(item, index) in info' :key ='index'>
+                      <td>{{item.name}}</td>
+                      <td>{{item.value}}</td>
+                  </tr>
+                </tbody>
             </table>
         </div>
   </div>

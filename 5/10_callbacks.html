@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1</title>
+    <title>10</title>
     <link rel="stylesheet" href="css//bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link href="css/animate.css" rel="stylesheet">
@@ -25,7 +25,8 @@
 						 @leave="leave"
 						 @after-leave="afterLeave"
 						 @leave-cancelled="leaveCancelled"
-    					>	
+						><!--режим mode устанавливает последовательность выполнения хуков, если поменять режим mode = 'in-out' то
+						последовательность выполнения будет происходить наоборот -->
 				<div class="alert alert-success" v-if="show" key="first">
 					<p>Some text about some</p>
 					<p>Some text about some</p>

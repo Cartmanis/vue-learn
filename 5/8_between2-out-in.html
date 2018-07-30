@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1</title>
+    <title>8</title>
     <link rel="stylesheet" href="css//bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link href="css/styles.css" rel="stylesheet">
@@ -15,7 +15,7 @@
    <div class="container">
 	   <div class="sample">
 			<button class="btn btn-primary" @click="show = !show">Toggle</button>
-			<transition name="boom" mode="out-in">
+			<transition name="boom" mode="out-in"><!--mode ='out-in' позваляет красиво менять анимацию без использования postion: absolute-->
 				<div class="alert alert-success" 
 					 v-if="show"
 					 key="success">
@@ -87,7 +87,10 @@
 		to{transform: translateX(-100vw);}
 	}
 
-	/*	
+	/* ------------------
+		mode, который стоит по умолчанию работает асинхроно сначала кусок скрываемого, затем кусок появлемого и.т.д.
+		-----------------
+
 	1 classList.add fade-leave 
 	2 classList.add fade-enter
 	1 classList.add fade-leave-active
@@ -105,6 +108,9 @@
 		  classList.remove fade-enter-active
 		  classList.remove fade-enter-to
 
+		-----------------------
+		mode = 'out-in' Сначала проходят все действия для скрываемого элемента, затем для появлемого, последовательно
+		----------------------
 
 	1 classList.add fade-leave 
 	1 classList.add fade-leave-active
@@ -123,8 +129,9 @@
 		  2 setTimout(transition-duration)
 			  classList.remove fade-enter-active
 			  classList.remove fade-enter-to
-	*/
 
+		PS:mode = 'in-out' работает наоборот - сначала все для enter, затем для leave 	  
+	*/
 </style>
 </body>
 </html>

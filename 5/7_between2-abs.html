@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1</title>
+    <title>7</title>
     <link rel="stylesheet" href="css//bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link href="css/styles.css" rel="stylesheet">
@@ -15,10 +15,12 @@
    <div class="container">
 	   <div class="sample">
 			<button class="btn btn-primary" @click="show = !show">Toggle</button>
-			<transition name="boom">
+			<transition name="boom"> <!--Переключение между двумя элементами c v-show работать не будет, так как 
+									необходимо, чтобы элементы присутсвовали в DOM физически, поэтому нужно использовать v-if-->
 				<div class="alert alert-success" 
 					 v-if="show"
-					 key="success">
+					 key="success"><!--показывает Vue.js, что div разные, для того, чтобы transition срабатывал.-->
+						
 					<div>Some text about some</div>
 					<div>Some text about some</div>
 					<div>Some text about some</div>
@@ -27,13 +29,15 @@
 				</div>
 				<div class="alert alert-danger" 
 				     v-else
-				     key="danger">
+				     key="danger"><!--Тут : ставить не нужно, так как, если поставить :, то Vue будет искать переменную success 
+						или другое js выражение, если мы просто присваиваем какое то значение то : ставить не нужно-->
 					<div>Some text about some</div>
 					<div>Some text about some</div>
 					<div>Some text about some</div>
 					<div>Some text about some</div>
 					<div>Some text about some</div>
-				</div>
+				</div> <!--transition хорошо проходит, между двумя разными элементами, если идёт два div, то Vue.js пытаясь оптимизировать
+						процесс не поймёт что элемент изменился и не запустит transition-->
 			</transition>
 		</div>
 	</div>
@@ -66,7 +70,7 @@
 	}
 
 	.boom-leave{
-		position: absolute;
+		position: absolute;/*absolute помогает делать красивую анимацию */
 	}
 
 	.boom-leave-active{

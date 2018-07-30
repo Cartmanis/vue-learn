@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1</title>
+    <title>9</title>
     <link rel="stylesheet" href="css//bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet"><!--Библиотека animate.css для использования готовых анимаций-->
     <link href="css/styles.css" rel="stylesheet">
     <script src="js/vue.js"></script>
     <style>
@@ -18,7 +18,8 @@
 			<button class="btn btn-primary" @click="show = !show">Toggle</button>
 			<transition enter-active-class="animated tada"
 						leave-active-class="animated bounceOutDown"
-						mode="out-in">
+						mode="out-in"><!-- enter-active и leave-active для произвольных классов, прописываем прямо сюда в видет атрибутов
+							аттрибут name можно вообще не задавать-->
 				<div class="alert alert-success" 
 					 v-if="show"
 					 key="success">

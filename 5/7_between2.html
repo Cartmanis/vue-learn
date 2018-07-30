@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1</title>
+    <title>7.2</title>
     <link rel="stylesheet" href="css//bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link href="css/styles.css" rel="stylesheet">
@@ -15,7 +15,7 @@
    <div class="container">
 	   <div class="sample">
 			<button class="btn btn-primary" @click="show = !show">Toggle</button>
-			<transition name="boom">
+			<transition name="boom" mode = 'out-in'><!--mode ='out-in' позваляет красиво менять анимацию без использования postion: absolute-->
 				<div class="alert alert-success" 
 					 v-if="show"
 					 key="success">
@@ -66,7 +66,7 @@
 	}
 
 	.boom-leave{
-		position: absolute;
+		
 	}
 
 	.boom-leave-active{
@@ -74,7 +74,7 @@
 	}
 
 	.boom-leave-to{
-		position: absolute;
+		
 	}
 
 	@keyframes slideIn{
