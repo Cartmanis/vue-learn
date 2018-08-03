@@ -22,6 +22,7 @@
         <div class="container">
           <div class="row">
             <div class="col col-sm-3 menu">
+              {{menuList}}
               <ul class="list-group">
                 <li class="list-group-item">Products</li>
                 <li class="list-group-item">Cart</li>
@@ -44,6 +45,11 @@ export default {
     return {
 
     }
+  },
+  computed: {
+    menuList() {
+      return this.$store.getters['products/items'];
+    } 
   }
 }
 </script>
