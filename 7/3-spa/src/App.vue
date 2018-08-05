@@ -9,7 +9,7 @@
 
               <div class="col col-sm-3">
                 <div class="alert alert-default">
-                  <div>In Cart: </div>
+                  <div>In Cart: {{countCart}} </div>
                 </div>
               </div>
             </div>
@@ -22,15 +22,20 @@
         <div class="container">
           <div class="row">
             <div class="col col-sm-3 menu">
-              {{menuList}}
               <ul class="list-group">
-                <li class="list-group-item">Products</li>
-                <li class="list-group-item">Cart</li>
-                <li class="list-group-item">Checkout</li>
+                <!--для vue используем непросто li и а router-link -->
+                <router-link v-for = '(item, index) in menuList'
+                 :key = 'index' :to = 'item.url'
+                 tag = 'li' class ='list-group-item'
+                 active-class = 'active'>
+                 <a>{{item.text}}</a></router-link>
               </ul>
             </div>
             <div class="col col-sm-9">
-                <router-view></router-view>
+              <transition name = 'slide' mode = 'out-in'>
+                <router-view></router-view><!--Чтобы роуторы заработали нужно в корневой
+                элемент вставить тег router-view-->
+              </transition>
             </div>
           </div>
         </div>
@@ -40,6 +45,8 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
   data () {
     return {
@@ -47,9 +54,12 @@ export default {
     }
   },
   computed: {
-    menuList() {
-      return this.$store.getters['products/items'];
-    } 
+    ...mapGetters('menu', {
+      menuList: 'items'
+    }),
+    ...mapGetters('cart', {
+      countCart: 'countInCart'
+    })
   }
 }
 </script>
@@ -62,6 +72,7 @@ export default {
 .list-group-item {
   transition: background 0.3s, color 0.3s;
 }
+
 
 .list-group-item a{
   text-decoration: none;
@@ -97,7 +108,7 @@ export default {
 
 @keyframes slideOut {
   from {transform: rotateY(0deg);}
-  to {transform: rotate(90deg);}
+  to {transform: rotateY(90deg);}
 }
 
 </style>

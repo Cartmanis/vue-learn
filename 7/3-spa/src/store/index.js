@@ -6,13 +6,15 @@ Vue.use(Vuex);
 import menu from './modules/menu';
 import products from './modules/products';
 import cart from './modules/cart';
+import checkout from './modules/checkout';
 
 //в этом объекте сливаются все модули из папки modules
 export const store = new Vuex.Store({
   modules: {
     menu,
     products,
-    cart
+    cart,
+    checkout
   },
   strict: process.env.NODE_ENV !== 'production'
 });

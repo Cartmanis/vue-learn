@@ -1,0 +1,21 @@
+<?php
+
+$data = [
+  [
+    'id-product' => 1,
+    'title' => 'Iphone 5',
+    'price' => 20000
+  ],
+  [
+    'id-product' => 2,
+    'title' => 'Iphone 6',
+    'price' => 25000
+  ],
+  [
+    'id-product' => 3,
+    'title' => 'Iphone 7',
+    'price' => 30000
+  ]
+];
+
+echo json_encode($data);
