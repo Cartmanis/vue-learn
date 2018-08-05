@@ -17,12 +17,12 @@
         {{btnText}}</button>
     </form>
     <div v-else class="alert alert-warning">В корзине нет товаров</div>
-    <div v-if = "showOrder" class = "alert alert-primary">
+    <div v-if = "showOrder" v-for = '(item, index) in dataOnServer' :key = 'index'>
         <h3>Заказ успешно принят</h3>
-        <div>Имя: {{dataOnServer.name}}</div>
-        <div>Номер телефона: {{dataOnServer.phone}}</div>
-        <div>Электронная почта: {{dataOnServer.email}}</div>
-        <div>Id заказанных товаров: {{dataOnServer.productsId}}</div>
+        <div>Имя: {{item.name}}</div>
+        <div>Номер телефона: {{item.phone}}</div>
+        <div>Электронная почта: {{item.email}}</div>
+        <div>Id заказанных товаров: {{item.productsId}}</div>
     </div>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
           name: this.info[0].value,
           phone: this.info[1].value,
           email: this.info[2].value,
-          productsId: this.productsInCart
+          productsId: this.productsInCart.slice()
         });
       }
   },

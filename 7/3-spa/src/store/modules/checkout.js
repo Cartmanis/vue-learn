@@ -25,7 +25,7 @@ export default {
     ],
     showOrder: false,
     processOrder: false,
-    dataServer: {}
+    dataServer: []
   },
   getters: {
     info(state) {
@@ -60,7 +60,7 @@ export default {
     sendOrder(state, data) {
       state.showOrder = true;
       state.processOrder = false;
-      state.dataServer = data;
+      state.dataServer.push(data);
     },
     changeProcessOrder(state) {
       state.processOrder = true;
