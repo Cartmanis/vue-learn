@@ -4,8 +4,8 @@ export default {
      //namespaced - решает за нас проблему с одинаковыми именами в разных модулях
      namespaced: true,
     state: {
-        //items: []
-        items: getProducts()
+        items: []
+        //items: getProducts()
     },
     getters: {
         items(state) {
@@ -44,16 +44,23 @@ export default {
     actions: {
       loadItems(store) {
         store.commit('clearItems');//Обнуляем кэш и эмулируем задержку ответа от сервера
+
+        //Пример использвания VueResource- метда get. Есть еще axios
+
         //тут можно было бы использовать this.$http.get
-        Vue.http.get('products.php')
-                   .then(response => response.json())
-                   .then(data => {
-                     store.commit('loadItems', data);
-                   });
+        Vue.http.get('products.php') //методы get и post во Vue возвращают promise,
+                                    //следовательно на них можно навешивать then
+          .then(response => response.json())
+          .then(data => { //data в данном случае -это возврат из прошлого then response.json()
+            store.commit('loadItems', data);
+          }).catch(err => {
+            console.log(err);
+          });
       }
     }
 };
 
+//Эмуляция ответа с сервера
 function getProducts() {
   return [
     {

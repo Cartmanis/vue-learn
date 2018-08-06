@@ -25,11 +25,11 @@ const routes = [
       component: ProductsList,
       //хук роута, который сработает быстрее чем хук created на 500ms, что может
       //сократить или вообще убрать эфект задержки ответа с сервера
-      /* beforeEnter(from, to, next) {
+       beforeEnter(from, to, next) {
         console.log('beforeEnter');
         store.dispatch('products/loadItems'); //вызываем actions ответа от сервера
         next(); //завершение хука, если не вызвать, то хук не сработает
-      } */
+      }
     },
     {
       path: '/cart',

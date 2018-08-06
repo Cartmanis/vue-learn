@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Promise</title>
+    </head>
+    <body>
+        <script>
+			userReg().then((res) => {
+				console.log(res);
+				return userAuth(); // new Promise
+			}).then((res) => {
+				console.log(res);
+				return userGetData();
+			}).then((res) => {
+				return res + Math.random();
+			}).then((res) => {
+				console.log(res);
+			//catch обрабатывает ошибку на том шаге- на котором она произошла, дальнейшее
+			//выполнение цепочки прерывается с сообщением из reject промиса, где произошла ошибка
+			}).catch((err) => { 
+				console.log(err);
+			});
+
+			function userReg(){
+				return new Promise(function(resolve, reject){
+					setTimeout(function(){
+						if(Math.random() > 0.2){
+							resolve("+ registration");
+						}
+						else{
+							reject("- registration");
+						}
+					}, 1000);
+				});
+			}
+
+			function userAuth(){
+				return new Promise(function(resolve, reject){
+					setTimeout(function(){
+						if(Math.random() > 0.2){
+							resolve("+ auth");
+						}
+						else{
+							reject("- auth");
+						}
+					}, 1000);
+				});
+			}
+
+			function userGetData(){
+				return new Promise(function(resolve, reject){
+					setTimeout(function(){
+						if(Math.random() > 0.2){
+							resolve("+ data");
+						}
+						else{
+							reject("- data");
+						}
+					}, 1000);
+				});
+			}
+			
+		</script>
+    </body>
+</html>
